@@ -11,36 +11,49 @@ terraform {
   }
 }
 
+resource "aci_rest" "fvTenant" {
+  dn         = "uni/tn-TF"
+  class_name = "fvTenant"
+}
+
 module "main" {
   source = "../.."
 
-  name = "ABC"
+  tenant = aci_rest.fvTenant.content.name
+  name   = "SGT1"
+  device = {
+    name = "DEV1"
+  }
 }
 
-data "aci_rest" "fvTenant" {
-  dn = "uni/tn-ABC"
+data "aci_rest" "vnsAbsGraph" {
+  dn = "uni/tn-${aci_rest.fvTenant.content.name}/AbsGraph-${module.main.name}"
 
   depends_on = [module.main]
 }
 
-resource "test_assertions" "fvTenant" {
-  component = "fvTenant"
+resource "test_assertions" "vnsAbsGraph" {
+  component = "vnsAbsGraph"
 
   equal "name" {
     description = "name"
-    got         = data.aci_rest.fvTenant.content.name
-    want        = "ABC"
+    got         = data.aci_rest.vnsAbsGraph.content.name
+    want        = module.main.name
   }
+}
 
-  equal "nameAlias" {
-    description = "nameAlias"
-    got         = data.aci_rest.fvTenant.content.nameAlias
-    want        = ""
-  }
+data "aci_rest" "vnsRsNodeToLDev" {
+  dn = "${data.aci_rest.vnsAbsGraph.id}/AbsNode-N1/rsNodeToLDev"
 
-  equal "descr" {
-    description = "descr"
-    got         = data.aci_rest.fvTenant.content.descr
-    want        = ""
+  depends_on = [module.main]
+}
+
+resource "test_assertions" "vnsRsNodeToLDev" {
+  component = "vnsRsNodeToLDev"
+
+  equal "tDn" {
+    description = "tDn"
+    got         = data.aci_rest.vnsRsNodeToLDev.content.tDn
+    want        = "uni/tn-TF/lDevVip-DEV1"
   }
 }
