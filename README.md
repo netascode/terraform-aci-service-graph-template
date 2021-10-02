@@ -22,13 +22,11 @@ module "aci_service_graph_template" {
   template_type       = "FW_ROUTED"
   redirect            = true
   share_encapsulation = true
-  device = {
-    name        = "DEV1"
-    tenant      = "DEF"
-    function    = "GoThrough"
-    copy_device = false
-    managed     = false
-  }
+  device_name         = "DEV1"
+  device_tenant       = "DEF"
+  device_function     = "GoThrough"
+  device_copy         = false
+  device_managed      = false
 }
 
 ```
@@ -57,7 +55,11 @@ module "aci_service_graph_template" {
 | <a name="input_template_type"></a> [template\_type](#input\_template\_type) | Template type. Choices: `FW_TRANS`, `FW_ROUTED`, `ADC_ONE_ARM`, `ADC_TWO_ARM`, `OTHER`, `CLOUD_NATIVE_LB`, `CLOUD_VENDOR_LB`, `CLOUD_NATIVE_FW`, `CLOUD_VENDOR_FW`. | `string` | `"OTHER"` | no |
 | <a name="input_redirect"></a> [redirect](#input\_redirect) | Redirect. | `bool` | `false` | no |
 | <a name="input_share_encapsulation"></a> [share\_encapsulation](#input\_share\_encapsulation) | Share encapsulation. | `bool` | `false` | no |
-| <a name="input_device"></a> [device](#input\_device) | Device. Default value `copy_device`: `false`. Default value `managed`: `false`. Choices `function`: `None`, `GoTo`, `GoThrough`, `L2`, `L1`. | <pre>object({<br>    name        = string<br>    tenant      = optional(string)<br>    function    = optional(string)<br>    copy_device = optional(bool)<br>    managed     = optional(bool)<br>  })</pre> | n/a | yes |
+| <a name="input_device_name"></a> [device\_name](#input\_device\_name) | L4L7 device name. | `string` | n/a | yes |
+| <a name="input_device_tenant"></a> [device\_tenant](#input\_device\_tenant) | L4L7 device tenant name. | `string` | `""` | no |
+| <a name="input_device_function"></a> [device\_function](#input\_device\_function) | Device function. Choices: `None`, `GoTo`, `GoThrough`, `L2`, `L1`. | `string` | `"GoTo"` | no |
+| <a name="input_device_copy"></a> [device\_copy](#input\_device\_copy) | L4L7 device copy function. | `bool` | `false` | no |
+| <a name="input_device_managed"></a> [device\_managed](#input\_device\_managed) | L4L7 managed device. | `bool` | `false` | no |
 
 ## Outputs
 

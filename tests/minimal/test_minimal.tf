@@ -19,11 +19,9 @@ resource "aci_rest" "fvTenant" {
 module "main" {
   source = "../.."
 
-  tenant = aci_rest.fvTenant.content.name
-  name   = "SGT1"
-  device = {
-    name = "DEV1"
-  }
+  tenant      = aci_rest.fvTenant.content.name
+  name        = "SGT1"
+  device_name = "DEV1"
 }
 
 data "aci_rest" "vnsAbsGraph" {

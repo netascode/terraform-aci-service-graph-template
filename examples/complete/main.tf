@@ -9,11 +9,9 @@ module "aci_service_graph_template" {
   template_type       = "FW_ROUTED"
   redirect            = true
   share_encapsulation = true
-  device = {
-    name        = "DEV1"
-    tenant      = "DEF"
-    function    = "GoThrough"
-    copy_device = false
-    managed     = false
-  }
+  device_name         = "DEV1"
+  device_tenant       = "DEF"
+  device_function     = "GoThrough"
+  device_copy         = false
+  device_managed      = false
 }

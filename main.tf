@@ -67,9 +67,9 @@ resource "aci_rest" "vnsAbsNode" {
   class_name = "vnsAbsNode"
   content = {
     funcTemplateType = var.template_type
-    funcType         = var.device.function != null ? var.device.function : "GoTo"
-    isCopy           = var.device.copy_device == true ? "yes" : "no"
-    managed          = var.device.managed == true ? "yes" : "no"
+    funcType         = var.device_function != "" ? var.device_function : "GoTo"
+    isCopy           = var.device_copy == true ? "yes" : "no"
+    managed          = var.device_managed == true ? "yes" : "no"
     name             = "N1"
     routingMode      = var.redirect == true ? "Redirect" : "unspecified"
     sequenceNumber   = "0"
@@ -99,7 +99,7 @@ resource "aci_rest" "vnsRsNodeToLDev" {
   dn         = "${aci_rest.vnsAbsNode.id}/rsNodeToLDev"
   class_name = "vnsRsNodeToLDev"
   content = {
-    tDn = "uni/tn-${var.device.tenant != null ? var.device.tenant : var.tenant}/lDevVip-${var.device.name}"
+    tDn = "uni/tn-${var.device_tenant != "" ? var.device_tenant : var.tenant}/lDevVip-${var.device_name}"
   }
 }
 

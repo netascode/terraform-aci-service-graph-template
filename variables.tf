@@ -63,28 +63,46 @@ variable "share_encapsulation" {
   default     = false
 }
 
-variable "device" {
-  description = "Device. Default value `copy_device`: `false`. Default value `managed`: `false`. Choices `function`: `None`, `GoTo`, `GoThrough`, `L2`, `L1`."
-  type = object({
-    name        = string
-    tenant      = optional(string)
-    function    = optional(string)
-    copy_device = optional(bool)
-    managed     = optional(bool)
-  })
+variable "device_name" {
+  description = "L4L7 device name."
+  type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.device.name))
-    error_message = "Allowed characters `name`: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.device_name))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
   }
+}
+
+variable "device_tenant" {
+  description = "L4L7 device tenant name."
+  type        = string
+  default     = ""
 
   validation {
-    condition     = var.device.tenant == null || try(can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.device.tenant)), false)
-    error_message = "Allowed characters `tenant`: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.device_tenant))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
   }
+}
+
+variable "device_function" {
+  description = "Device function. Choices: `None`, `GoTo`, `GoThrough`, `L2`, `L1`."
+  type        = string
+  default     = "GoTo"
 
   validation {
-    condition     = var.device.function == null || try(contains(["None", "GoTo", "GoThrough", "L2", "L1"], var.device.function), false)
-    error_message = "`function`: Allowed values are `None`, `GoTo`, `GoThrough`, `L2` or `L1`."
+    condition     = contains(["None", "GoTo", "GoThrough", "L2", "L1"], var.device_function)
+    error_message = "Allowed values are `None`, `GoTo`, `GoThrough`, `L2` or `L1`."
   }
+}
+
+variable "device_copy" {
+  description = "L4L7 device copy function."
+  type        = bool
+  default     = false
+}
+
+variable "device_managed" {
+  description = "L4L7 managed device."
+  type        = bool
+  default     = false
 }
