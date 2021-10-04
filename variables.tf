@@ -85,7 +85,7 @@ variable "device_tenant" {
 }
 
 variable "device_function" {
-  description = "Device function. Choices: `None`, `GoTo`, `GoThrough`, `L2`, `L1`."
+  description = "L4L7 device function. Choices: `None`, `GoTo`, `GoThrough`, `L2`, `L1`."
   type        = string
   default     = "GoTo"
 
