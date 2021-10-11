@@ -11,7 +11,7 @@ resource "aci_rest" "vnsAbsGraph" {
 }
 
 resource "aci_rest" "vnsAbsTermNodeCon" {
-  dn         = "${aci_rest.vnsAbsGraph.id}/AbsTermNodeCon-T1"
+  dn         = "${aci_rest.vnsAbsGraph.dn}/AbsTermNodeCon-T1"
   class_name = "vnsAbsTermNodeCon"
   content = {
     name = "T1"
@@ -19,7 +19,7 @@ resource "aci_rest" "vnsAbsTermNodeCon" {
 }
 
 resource "aci_rest" "vnsAbsTermConn_T1" {
-  dn         = "${aci_rest.vnsAbsTermNodeCon.id}/AbsTConn"
+  dn         = "${aci_rest.vnsAbsTermNodeCon.dn}/AbsTConn"
   class_name = "vnsAbsTermConn"
   content = {
     name = "1"
@@ -27,17 +27,17 @@ resource "aci_rest" "vnsAbsTermConn_T1" {
 }
 
 resource "aci_rest" "vnsInTerm_T1" {
-  dn         = "${aci_rest.vnsAbsTermNodeCon.id}/intmnl"
+  dn         = "${aci_rest.vnsAbsTermNodeCon.dn}/intmnl"
   class_name = "vnsInTerm"
 }
 
 resource "aci_rest" "vnsOutTerm_T1" {
-  dn         = "${aci_rest.vnsAbsTermNodeCon.id}/outtmnl"
+  dn         = "${aci_rest.vnsAbsTermNodeCon.dn}/outtmnl"
   class_name = "vnsOutTerm"
 }
 
 resource "aci_rest" "vnsAbsTermNodeProv" {
-  dn         = "${aci_rest.vnsAbsGraph.id}/AbsTermNodeProv-T2"
+  dn         = "${aci_rest.vnsAbsGraph.dn}/AbsTermNodeProv-T2"
   class_name = "vnsAbsTermNodeProv"
   content = {
     name = "T2"
@@ -45,7 +45,7 @@ resource "aci_rest" "vnsAbsTermNodeProv" {
 }
 
 resource "aci_rest" "vnsAbsTermConn_T2" {
-  dn         = "${aci_rest.vnsAbsTermNodeProv.id}/AbsTConn"
+  dn         = "${aci_rest.vnsAbsTermNodeProv.dn}/AbsTConn"
   class_name = "vnsAbsTermConn"
   content = {
     name = "1"
@@ -53,17 +53,17 @@ resource "aci_rest" "vnsAbsTermConn_T2" {
 }
 
 resource "aci_rest" "vnsInTerm_T2" {
-  dn         = "${aci_rest.vnsAbsTermNodeProv.id}/intmnl"
+  dn         = "${aci_rest.vnsAbsTermNodeProv.dn}/intmnl"
   class_name = "vnsInTerm"
 }
 
 resource "aci_rest" "vnsOutTerm_T2" {
-  dn         = "${aci_rest.vnsAbsTermNodeProv.id}/outtmnl"
+  dn         = "${aci_rest.vnsAbsTermNodeProv.dn}/outtmnl"
   class_name = "vnsOutTerm"
 }
 
 resource "aci_rest" "vnsAbsNode" {
-  dn         = "${aci_rest.vnsAbsGraph.id}/AbsNode-N1"
+  dn         = "${aci_rest.vnsAbsGraph.dn}/AbsNode-N1"
   class_name = "vnsAbsNode"
   content = {
     funcTemplateType = var.template_type
@@ -78,7 +78,7 @@ resource "aci_rest" "vnsAbsNode" {
 }
 
 resource "aci_rest" "vnsAbsFuncConn_Provider" {
-  dn         = "${aci_rest.vnsAbsNode.id}/AbsFConn-provider"
+  dn         = "${aci_rest.vnsAbsNode.dn}/AbsFConn-provider"
   class_name = "vnsAbsFuncConn"
   content = {
     attNotify = "no"
@@ -87,7 +87,7 @@ resource "aci_rest" "vnsAbsFuncConn_Provider" {
 }
 
 resource "aci_rest" "vnsAbsFuncConn_Consumer" {
-  dn         = "${aci_rest.vnsAbsNode.id}/AbsFConn-consumer"
+  dn         = "${aci_rest.vnsAbsNode.dn}/AbsFConn-consumer"
   class_name = "vnsAbsFuncConn"
   content = {
     attNotify = "no"
@@ -96,7 +96,7 @@ resource "aci_rest" "vnsAbsFuncConn_Consumer" {
 }
 
 resource "aci_rest" "vnsRsNodeToLDev" {
-  dn         = "${aci_rest.vnsAbsNode.id}/rsNodeToLDev"
+  dn         = "${aci_rest.vnsAbsNode.dn}/rsNodeToLDev"
   class_name = "vnsRsNodeToLDev"
   content = {
     tDn = "uni/tn-${var.device_tenant != "" ? var.device_tenant : var.tenant}/lDevVip-${var.device_name}"
@@ -104,7 +104,7 @@ resource "aci_rest" "vnsRsNodeToLDev" {
 }
 
 resource "aci_rest" "vnsAbsConnection_Consumer" {
-  dn         = "${aci_rest.vnsAbsGraph.id}/AbsConnection-C1"
+  dn         = "${aci_rest.vnsAbsGraph.dn}/AbsConnection-C1"
   class_name = "vnsAbsConnection"
   content = {
     adjType       = "L3"
@@ -117,23 +117,23 @@ resource "aci_rest" "vnsAbsConnection_Consumer" {
 }
 
 resource "aci_rest" "vnsRsAbsConnectionConns_ConT1" {
-  dn         = "${aci_rest.vnsAbsConnection_Consumer.id}/rsabsConnectionConns-[${aci_rest.vnsAbsTermConn_T1.id}]"
+  dn         = "${aci_rest.vnsAbsConnection_Consumer.dn}/rsabsConnectionConns-[${aci_rest.vnsAbsTermConn_T1.dn}]"
   class_name = "vnsRsAbsConnectionConns"
   content = {
-    tDn = aci_rest.vnsAbsTermConn_T1.id
+    tDn = aci_rest.vnsAbsTermConn_T1.dn
   }
 }
 
 resource "aci_rest" "vnsRsAbsConnectionConns_NodeN1Consumer" {
-  dn         = "${aci_rest.vnsAbsConnection_Consumer.id}/rsabsConnectionConns-[${aci_rest.vnsAbsFuncConn_Consumer.id}]"
+  dn         = "${aci_rest.vnsAbsConnection_Consumer.dn}/rsabsConnectionConns-[${aci_rest.vnsAbsFuncConn_Consumer.dn}]"
   class_name = "vnsRsAbsConnectionConns"
   content = {
-    tDn = aci_rest.vnsAbsFuncConn_Consumer.id
+    tDn = aci_rest.vnsAbsFuncConn_Consumer.dn
   }
 }
 
 resource "aci_rest" "vnsAbsConnection_Provider" {
-  dn         = "${aci_rest.vnsAbsGraph.id}/AbsConnection-C2"
+  dn         = "${aci_rest.vnsAbsGraph.dn}/AbsConnection-C2"
   class_name = "vnsAbsConnection"
   content = {
     adjType       = "L3"
@@ -146,17 +146,17 @@ resource "aci_rest" "vnsAbsConnection_Provider" {
 }
 
 resource "aci_rest" "vnsRsAbsConnectionConns_ConT2" {
-  dn         = "${aci_rest.vnsAbsConnection_Provider.id}/rsabsConnectionConns-[${aci_rest.vnsAbsTermConn_T2.id}]"
+  dn         = "${aci_rest.vnsAbsConnection_Provider.dn}/rsabsConnectionConns-[${aci_rest.vnsAbsTermConn_T2.dn}]"
   class_name = "vnsRsAbsConnectionConns"
   content = {
-    tDn = aci_rest.vnsAbsTermConn_T2.id
+    tDn = aci_rest.vnsAbsTermConn_T2.dn
   }
 }
 
 resource "aci_rest" "vnsRsAbsConnectionConns_NodeN1Provider" {
-  dn         = "${aci_rest.vnsAbsConnection_Provider.id}/rsabsConnectionConns-[${aci_rest.vnsAbsFuncConn_Provider.id}]"
+  dn         = "${aci_rest.vnsAbsConnection_Provider.dn}/rsabsConnectionConns-[${aci_rest.vnsAbsFuncConn_Provider.dn}]"
   class_name = "vnsRsAbsConnectionConns"
   content = {
-    tDn = aci_rest.vnsAbsFuncConn_Provider.id
+    tDn = aci_rest.vnsAbsFuncConn_Provider.dn
   }
 }
