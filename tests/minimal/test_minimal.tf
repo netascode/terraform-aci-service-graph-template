@@ -5,13 +5,13 @@ terraform {
     }
 
     aci = {
-      source  = "netascode/aci"
-      version = ">=0.2.0"
+      source  = "CiscoDevNet/aci"
+      version = ">=2.0.0"
     }
   }
 }
 
-resource "aci_rest" "fvTenant" {
+resource "aci_rest_managed" "fvTenant" {
   dn         = "uni/tn-TF"
   class_name = "fvTenant"
 }
@@ -19,13 +19,13 @@ resource "aci_rest" "fvTenant" {
 module "main" {
   source = "../.."
 
-  tenant      = aci_rest.fvTenant.content.name
+  tenant      = aci_rest_managed.fvTenant.content.name
   name        = "SGT1"
   device_name = "DEV1"
 }
 
-data "aci_rest" "vnsAbsGraph" {
-  dn = "uni/tn-${aci_rest.fvTenant.content.name}/AbsGraph-${module.main.name}"
+data "aci_rest_managed" "vnsAbsGraph" {
+  dn = "uni/tn-${aci_rest_managed.fvTenant.content.name}/AbsGraph-${module.main.name}"
 
   depends_on = [module.main]
 }
@@ -35,13 +35,13 @@ resource "test_assertions" "vnsAbsGraph" {
 
   equal "name" {
     description = "name"
-    got         = data.aci_rest.vnsAbsGraph.content.name
+    got         = data.aci_rest_managed.vnsAbsGraph.content.name
     want        = module.main.name
   }
 }
 
-data "aci_rest" "vnsRsNodeToLDev" {
-  dn = "${data.aci_rest.vnsAbsGraph.id}/AbsNode-N1/rsNodeToLDev"
+data "aci_rest_managed" "vnsRsNodeToLDev" {
+  dn = "${data.aci_rest_managed.vnsAbsGraph.id}/AbsNode-N1/rsNodeToLDev"
 
   depends_on = [module.main]
 }
@@ -51,7 +51,7 @@ resource "test_assertions" "vnsRsNodeToLDev" {
 
   equal "tDn" {
     description = "tDn"
-    got         = data.aci_rest.vnsRsNodeToLDev.content.tDn
+    got         = data.aci_rest_managed.vnsRsNodeToLDev.content.tDn
     want        = "uni/tn-TF/lDevVip-DEV1"
   }
 }
