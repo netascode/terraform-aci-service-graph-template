@@ -58,7 +58,6 @@ module "aci_service_graph_template" {
 | <a name="input_device_tenant"></a> [device\_tenant](#input\_device\_tenant) | L4L7 device tenant name. | `string` | `""` | no |
 | <a name="input_device_function"></a> [device\_function](#input\_device\_function) | L4L7 device function. Choices: `None`, `GoTo`, `GoThrough`, `L2`, `L1`. | `string` | `"GoTo"` | no |
 | <a name="input_device_copy"></a> [device\_copy](#input\_device\_copy) | L4L7 device copy function. | `bool` | `false` | no |
-| <a name="input_device_managed"></a> [device\_managed](#input\_device\_managed) | L4L7 managed device. | `bool` | `false` | no |
 
 ## Outputs
 

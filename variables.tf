@@ -100,9 +100,3 @@ variable "device_copy" {
   type        = bool
   default     = false
 }
-
-variable "device_managed" {
-  description = "L4L7 managed device."
-  type        = bool
-  default     = false
-}

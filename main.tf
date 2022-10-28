@@ -69,7 +69,7 @@ resource "aci_rest_managed" "vnsAbsNode" {
     funcTemplateType = var.template_type
     funcType         = var.device_function != "" ? var.device_function : "GoTo"
     isCopy           = var.device_copy == true ? "yes" : "no"
-    managed          = var.device_managed == true ? "yes" : "no"
+    managed          = "no"
     name             = "N1"
     routingMode      = var.redirect == true ? "Redirect" : "unspecified"
     sequenceNumber   = "0"
